@@ -26,6 +26,10 @@ import bookingRouter from "./booking/booking.routes.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/class", classRouter);
 app.use("/api/v1/booking", bookingRouter);
+// Root route to show a message
+app.get("/", (req, res) => {
+  res.send("Welcome to the Gym Scheduler API!");
+});
 app.use(errorHandler);
 
 export { app };
