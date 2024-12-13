@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-
+import { errorHandler } from "./middlewares/errorHandler.middleware.js";
 const app = express();
 
 // Middlewares
@@ -26,5 +26,6 @@ import bookingRouter from "./booking/booking.routes.js";
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/class", classRouter);
 app.use("/api/v1/booking", bookingRouter);
+app.use(errorHandler);
 
 export { app };

@@ -9,28 +9,60 @@ import {
   generateAccessAndRefereshTokens,
   loginUserService,
 } from "./user.service.js";
+import { isValidEmail } from "../lib/isValidEmail.js";
 
-const registerUser = asyncHandler(async (req, res) => {
+// const registerUser = asyncHandler(async (req, res) => {
+//   const { fullName, email, password } = req.body;
+
+//   if ([fullName, email, password].some((field) => field?.trim() === "")) {
+//     throw new ApiError(400, "All fields are required");
+//   }
+//   if (!isValidEmail(email)) {
+//     throw ApiError.validationError("email", "Invalid email format.");
+//   }
+//   const existedUser = await User.findOne({
+//     $or: [{ email }],
+//   });
+
+//   if (existedUser) {
+//     throw new ApiError(409, "User with email or username already exists");
+//   }
+
+//   const createdUser = await createUser(fullName, email, password);
+
+//   return res
+//     .status(201)
+//     .json(new ApiResponse(200, createdUser, "User registered Successfully"));
+// });
+
+const registerUser = async (req, res, next) => {
   const { fullName, email, password } = req.body;
 
-  if ([fullName, email, password].some((field) => field?.trim() === "")) {
-    throw new ApiError(400, "All fields are required");
+  // Check for missing fields
+  if ([fullName, email, password].some((field) => !field.trim())) {
+    return next(new ApiError(400, "All fields are required"));
   }
 
-  const existedUser = await User.findOne({
-    $or: [{ email }],
-  });
-
-  if (existedUser) {
-    throw new ApiError(409, "User with email or username already exists");
+  // Validate email format
+  if (!isValidEmail(email)) {
+    return next(ApiError.validationError("email", "Invalid email format."));
   }
 
+  // Check if user already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return next(new ApiError(409, "User with email already exists"));
+  }
+
+  // Create new user
   const createdUser = await createUser(fullName, email, password);
 
-  return res
-    .status(201)
-    .json(new ApiResponse(200, createdUser, "User registered Successfully"));
-});
+  return res.status(201).json({
+    success: true,
+    message: "User registered successfully",
+    data: createdUser,
+  });
+};
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
@@ -38,7 +70,9 @@ const loginUser = asyncHandler(async (req, res) => {
   if (!username && !email) {
     throw new ApiError(400, "username or email is required");
   }
-
+  if (!isValidEmail(email)) {
+    throw ApiError.validationError("email", "Invalid email format.");
+  }
   const user = await User.findOne({
     $or: [{ username }, { email }],
   });

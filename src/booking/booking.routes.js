@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   createBooking,
   getUserBookings,
-  getClassBookings,
+  getBookedClasses,
   getAllBookings,
   deleteBooking,
 } from "./booking.controller.js";
@@ -18,7 +18,7 @@ router.post("/create-booking", verifyJWT, createBooking);
 router.get("/get-user-bookings", verifyJWT, getUserBookings);
 
 // Route to get all bookings for a class
-router.get("/get-class-bookings/:classId", verifyJWT, getClassBookings);
+router.get("/get-booked-classes/:classId", verifyJWT, getBookedClasses);
 
 // Route to get all bookings (admin only)
 router.get("/get-all-bookings", verifyJWT, verifyAdmin, getAllBookings);

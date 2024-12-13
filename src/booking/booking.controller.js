@@ -55,7 +55,7 @@ const getUserBookings = asyncHandler(async (req, res) => {
 });
 
 // Get all bookings for a class
-const getClassBookings = asyncHandler(async (req, res) => {
+const getBookedClasses = asyncHandler(async (req, res) => {
   const { classId } = req.params;
 
   const classBookings = await Booking.find({ class: classId })
@@ -97,7 +97,7 @@ const deleteBooking = asyncHandler(async (req, res) => {
 export {
   createBooking,
   getUserBookings,
-  getClassBookings,
+  getBookedClasses,
   getAllBookings,
   deleteBooking,
 };
