@@ -226,8 +226,12 @@ CLOUDINARY_API_SECRET=
 
 ---
 
+## Postman Documentation Link
+
+- [Postman Url](https://documenter.getpostman.com/view/35184130/2sAYHxn4Eb#85d01253-2bda-470c-86de-dde2e3ea79ab)
+
 ## Live Hosting Link
 
-- [Live Project](https://your-deployed-project-link.com)
+- [Live Project](https://gym-scheduler-server.vercel.app/)
 
 ---
